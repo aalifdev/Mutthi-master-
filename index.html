@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aalif — The Experience</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --x: 50%;
+    --y: 50%;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background: #050509;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    perspective: 1000px;
+}
+
+button {
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+#universe {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 45%,
+        #25213d 0%, #10101b 40%, #030306 100%);
+    transition: background 1s;
+}
+
+#universe::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: repeating-linear-gradient(
+        0deg, transparent 0 49px,
+        #ffffff08 50px
+    ),
+    repeating-linear-gradient(
+        90deg, transparent 0 49px,
+        #ffffff08 50px
+    );
+    transform: perspective(500px) rotateX(58deg)
+               scale(1.5);
+    animation: gridMove 14s linear infinite;
+}
+
+#universe::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+        circle at var(--x) var(--y),
+        #ffffff12, transparent 35%
+    );
+}
+
+@keyframes gridMove {
+    to {
+        background-position: 0 100px, 100px 0;
+    }
+}
+
+.scene {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 24px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px) scale(.94);
+}
+
+.scene.active {
+    display: flex;
+    animation: sceneIn 1s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.scene.leaving {
+    animation: sceneOut .45s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes sceneIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes sceneOut {
+    to {
+        opacity: 0;
+        transform: translateY(-25px) scale(1.08);
+        filter: blur(12px);
+    }
+}
+
+.eyebrow {
+    color: #aaa5ce;
+    font-size: 10px;
+    letter-spacing: 6px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+    animation: float 3s ease-in-out infinite;
+}
+
+h1 {
+    font-size: clamp(32px, 8vw, 68px);
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.intro-title {
+    animation: titleEnter 1.3s cubic-bezier(.2,.8,.2,1) both;
+    text-shadow: 0 8px 0 #000, 0 0 40px #a5a0ff35;
+}
+
+.intro-title span {
+    display: inline-block;
+    background: linear-gradient(
+        110deg, #fff, #b8adff, #fff
+    );
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: shine 4s linear infinite;
+}
+
+@keyframes titleEnter {
+    from {
+        opacity: 0;
+        transform: translateY(50px) rotateX(30deg);
+        filter: blur(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+@keyframes float {
+    50% { transform: translateY(-5px); }
+}
+
+.main-btn {
+    margin-top: 38px;
+    min-width: 180px;
+    padding: 17px 30px;
+    color: white;
+    background: linear-gradient(135deg, #29243f, #111018);
+    border: 1px solid #8278bd;
+    border-radius: 8px;
+    box-shadow:
+        0 7px 0 #090810,
+        0 12px 30px #0009,
+        inset 0 1px #ffffff24;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.main-btn:active {
+    transform: translateY(5px) scale(.97);
+    box-shadow: 0 2px 0 #090810;
+}
+
+.main-btn:hover {
+    box-shadow: 0 7px 0 #090810, 0 0 35px #8d7bff45;
+    transform: translateY(-3px);
+}
+
+.subtext {
+    margin-top: 20px;
+    color: #a9a5bd;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.land {
+    font-size: clamp(48px, 12vw, 100px);
+    letter-spacing: -3px;
+    color: #fff;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 35px #a69aff,
+        0 0 90px #6953ff;
+    animation: landGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes landGlow {
+    to {
+        text-shadow:
+            0 0 18px white,
+            0 0 50px #c2aaff,
+            0 0 120px #7459ff;
+        transform: scale(1.04);
+    }
+}
+
+.panel {
+    width: min(90vw, 440px);
+    padding: 42px 25px;
+    background: linear-gradient(145deg,
+        #ffffff12, #ffffff03);
+    border: 1px solid #ffffff20;
+    border-radius: 20px;
+    box-shadow:
+        15px 20px 60px #0008,
+        inset 0 1px #ffffff24;
+    backdrop-filter: blur(15px);
+    transform-style: preserve-3d;
+    animation: panelFloat 4s ease-in-out infinite;
+}
+
+@keyframes panelFloat {
+    0%, 100% { transform: rotateY(-3deg) rotateX(2deg); }
+    50% { transform: rotateY(3deg) rotateX(-2deg) translateY(-8px); }
+}
+
+.panel h2 {
+    font-size: clamp(24px, 6vw, 38px);
+    line-height: 1.3;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #fff, #c5a9ff, #fff);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+.panel p {
+    color: #c1bdd0;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.signature {
+    margin-top: 28px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #a9a0d8;
+}
+
+.mutthi-btn {
+    width: 165px;
+    height: 165px;
+    border-radius: 50%;
+    border: 1px solid #f4b3ff;
+    color: white;
+    background: radial-gradient(circle at 30% 20%,
+        #ffb5f7, #923dcb 40%, #301048 80%);
+    box-shadow:
+        0 0 25px #db6cff70,
+        0 15px 0 #260b35,
+        0 25px 55px #0009,
+        inset 0 3px 10px #ffffff65;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transform: scale(var(--scale, 1));
+    transition: transform .25s cubic-bezier(.2,1.5,.4,1),
+                filter .25s;
+    animation: buttonFloat 2.5s ease-in-out infinite;
+}
+
+.mutthi-btn:hover {
+    filter: brightness(1.2);
+}
+
+.mutthi-btn:active {
+    filter: brightness(1.5);
+}
+
+@keyframes buttonFloat {
+    50% { translate: 0 -8px; }
+}
+
+#counter {
+    margin-top: 38px;
+    color: #d3b5ff;
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+#reaction {
+    min-height: 35px;
+    margin-top: 20px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 20px #e2a4ff;
+}
+
+.particle {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    font-size: 22px;
+    animation: particleFly .9s ease-out forwards;
+}
+
+@keyframes particleFly {
+    from {
+        opacity: 1;
+        transform: translate(0,0) scale(.5) rotate(0);
+    }
+    to {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy))
+                   scale(1.7) rotate(160deg);
+    }
+}
+
+#flash {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#flash.blast {
+    animation: whiteBlast 3s ease forwards;
+}
+
+@keyframes whiteBlast {
+    0% { opacity: 1; }
+    12% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+#finalTitle {
+    font-size: clamp(36px, 10vw, 82px);
+    font-weight: 1000;
+    line-height: 1.25;
+    background: linear-gradient(
+        100deg, #ff4b91, #ffc857, #7dffcf,
+        #66aaff, #d68aff, #ff4b91
+    );
+    background-size: 300% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: rainbow 3s linear infinite, finalIn 1s ease both;
+    filter: drop-shadow(0 0 25px #b28aff55);
+}
+
+@keyframes rainbow {
+    to { background-position: 300% center; }
+}
+
+@keyframes finalIn {
+    from { opacity: 0; transform: scale(.5) rotateX(35deg); }
+    to { opacity: 1; transform: scale(1) rotateX(0); }
+}
+
+#finalScene {
+    background: radial-gradient(
+        circle, #21182f 0%, #08080d 70%
+    );
+}
+
+.final-sub {
+    color: #f5d5ff;
+    margin-top: 25px;
+    font-size: 15px;
+    letter-spacing: 5px;
+    animation: float 2s infinite;
+}
+
+.brand {
+    position: fixed;
+    bottom: 22px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #6f6b84;
+    font-size: 9px;
+    letter-spacing: 4px;
+    pointer-events: none;
+    transition: opacity .3s;
+    z-index: 5;
+}
+
+@media (max-height: 650px) {
+    .eyebrow { margin-bottom: 15px; }
+    .main-btn { margin-top: 22px; }
+    .panel { padding: 25px 20px; }
+    .mutthi-btn { width: 125px; height: 125px; }
+}
+</style>
+</head>
+
+<body>
+<div id="universe"></div>
+<div id="flash"></div>
+
+<!-- SCREEN 1 -->
+<section class="scene active" id="intro">
+    <div class="eyebrow">AALIF ORIGINAL EXPERIENCE</div>
+
+    <h1 class="intro-title">
+        ek or mutthi<br>
+        phir duniya se<br>
+        <span>chutthi.</span>
+    </h1>
+
+    <button class="main-btn" onclick="goTo('landScene')">
+        START ↗
+    </button>
+</section>
+
+<!-- SCREEN 2 -->
+<section class="scene" id="landScene">
+    <div class="eyebrow">WAIT... WHAT?</div>
+    <h1 class="land">land lele</h1>
+    <p class="subtext">mazak kar, niche click kar ↓</p>
+
+    <button class="main-btn" onclick="goTo('creatorScene')">
+        CONTINUE →
+    </button>
+</section>
+
+<!-- SCREEN 3 -->
+<section class="scene" id="creatorScene">
+    <div class="eyebrow">BEHIND THE CHAOS</div>
+
+    <div class="panel">
+        <h2>THE CREATOR</h2>
+        <p>
+            ye website ko aalif ne banaya hai💔🥀
+        </p>
+        <div class="signature">DESIGNED WITH CHAOS.</div>
+    </div>
+
+    <button class="main-btn" onclick="goTo('gameScene')">
+        CONTINUE →
+    </button>
+</section>
+
+<!-- SCREEN 4 -->
+<section class="scene" id="gameScene">
+    <div class="eyebrow">THE FINAL CHALLENGE</div>
+
+    <button class="mutthi-btn" id="mutthiBtn"
+            onclick="hitButton()">
+        MUTTHI 😈
+    </button>
+
+    <div id="counter">POWER LEVEL: 0%</div>
+    <div id="reaction">Dabao. Dekho kya hota hai.</div>
+</section>
+
+<!-- SCREEN 5 -->
+<section class="scene" id="finalScene">
+    <div class="eyebrow">MISSION REPORT</div>
+    <h1 id="finalTitle">MUTTHI<br>DONE</h1>
+    <div class="final-sub">KAL AAANA.</div>
+    <p class="subtext">AALIF WAS HERE 💔🥀</p>
+    <button class="main-btn" onclick="location.reload()">
+        REPLAY ↻
+    </button>
+</section>
+
+<div class="brand" id="brand">
+    AN INTERACTIVE EXPERIENCE · BY AALIF
+</div>
+
+<script>
+const scenes = document.querySelectorAll(".scene");
+const brand = document.getElementById("brand");
+const flash = document.getElementById("flash");
+const universe = document.getElementById("universe");
+
+let busy = false;
+let clicks = 0;
+const maxClicks = 7;
+
+function goTo(id) {
+    if (busy) return;
+    busy = true;
+
+    const current = document.querySelector(".scene.active");
+    if (current) {
+        current.classList.add("leaving");
+
+        setTimeout(() => {
+            current.classList.remove("active", "leaving");
+            current.style.display = "";
+            showScene(id);
+        }, 420);
+    } else {
+        showScene(id);
+    }
+}
+
+function showScene(id) {
+    const next = document.getElementById(id);
+    next.classList.add("active");
+    brand.style.opacity = id === "finalScene" ? "0.7" : "1";
+
+    if (id === "landScene") {
+        universe.style.background =
+          "radial-gradient(ellipse at center, #29204c, #08070e 75%)";
+    } else if (id === "creatorScene") {
+        universe.style.background =
+          "radial-gradient(ellipse at center, #153638, #05090c 75%)";
+    } else if (id === "gameScene") {
+        universe.style.background =
+          "radial-gradient(ellipse at center, #371744, #08050d 75%)";
+    }
+
+    busy = false;
+}
+
+// Subtle 3D movement following pointer or touch.
+function tilt(x, y) {
+    document.documentElement.style.setProperty("--x", x + "%");
+    document.documentElement.style.setProperty("--y", y + "%");
+}
+
+document.addEventListener("pointermove", e => {
+    tilt(e.clientX / innerWidth * 100,
+         e.clientY / innerHeight * 100);
+});
+
+document.addEventListener("touchmove", e => {
+    if (!e.touches.length) return;
+    tilt(e.touches[0].clientX / innerWidth * 100,
+         e.touches[0].clientY / innerHeight * 100);
+}, { passive: true });
+
+// A short synthesized splash-like sound. No audio file needed.
+function playSplash() {
+    try {
+        const AudioContext =
+            window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+
+        const ctx = new AudioContext();
+        const duration = 0.65;
+        const length = Math.floor(ctx.sampleRate * duration);
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        for (let i = 0; i < length; i++) {
+            const t = i / length;
+            data[i] = (Math.random() * 2 - 1) *
+                      Math.pow(1 - t, 3);
+        }
+
+        const source = ctx.createBufferSource();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+
+        source.buffer = buffer;
+        filter.type = "lowpass";
+        filter.frequency.value = 900;
+        gain.gain.value = 0.7;
+
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        source.start();
+        source.onended = () => ctx.close();
+    } catch (e) {
+        // The animation still works if audio is unavailable.
+    }
+}
+
+const reactions = [
+    "Abhi toh shuruaat hai 😈",
+    "Power badh rahi hai 🔥",
+    "Bhai rukne ka naam nahi 😎",
+    "SYSTEM OVERLOAD 💥",
+    "AB AAYEGA MAZA 😈🔥",
+    "FINAL LEVEL UNLOCKED 💀",
+    "MISSION COMPLETE 💥"
+];
+
+function particles() {
+    const emojis = ["✨", "💥", "😈", "🔥", "⭐", "💫"];
+
+    const button = document.getElementById("mutthiBtn");
+    const rect = button.getBoundingClientRect();
+
+    for (let i = 0; i < 12; i++) {
+        const p = document.createElement("span");
+        p.className = "particle";
+        p.textContent =
+            emojis[Math.floor(Math.random() * emojis.length)];
+
+        p.style.left = (rect.left + rect.width / 2) + "px";
+        p.style.top = (rect.top + rect.height / 2) + "px";
+        p.style.setProperty("--dx", (Math.random() * 300 - 150) + "px");
+        p.style.setProperty("--dy", (Math.random() * 300 - 150) + "px");
+
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+function hitButton() {
+    if (busy || clicks >= maxClicks) return;
+
+    clicks++;
+
+    const btn = document.getElementById("mutthiBtn");
+    const counter = document.getElementById("counter");
+    const reaction = document.getElementById("reaction");
+
+    const scale = 1 + clicks * 0.15;
+
+    btn.style.setProperty("--scale", scale);
+    btn.style.filter = `hue-rotate(${clicks * 30}deg)`;
+
+    counter.textContent =
+        "POWER LEVEL: " + Math.round(clicks / maxClicks * 100) + "%";
+
+    reaction.textContent = reactions[clicks - 1];
+
+    particles();
+
+    if (clicks >= maxClicks) {
+        busy = true;
+        btn.textContent = "DONE 💥";
+
+        setTimeout(() => {
+            playSplash();
+
+            flash.classList.remove("blast");
+            void flash.offsetWidth;
+            flash.classList.add("blast");
+
+            setTimeout(() => {
+                document.getElementById("gameScene")
+                    .classList.remove("active");
+
+                showScene("finalScene");
+                universe.style.background =
+                    "radial-gradient(circle, #302040, #050509 75%)";
+            }, 1800);
+
+        }, 350);
+    }
+}
+</script>
+</body>
+</html>
